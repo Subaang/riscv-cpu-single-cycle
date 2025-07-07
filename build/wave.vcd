@@ -1,5 +1,5 @@
 $date
-	Mon Jun 30 00:09:08 2025
+	Sun Jul  6 17:55:03 2025
 $end
 $version
 	Icarus Verilog
@@ -7,7 +7,7 @@ $end
 $timescale
 	1ps
 $end
-$scope module tb_top $end
+$scope module tb_Top $end
 $var reg 1 ! clk $end
 $var reg 1 " reset $end
 $scope module uut $end

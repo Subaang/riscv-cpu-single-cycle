@@ -16,6 +16,8 @@ module Top (
     logic [2:0] ALUControl;
     logic Zero;
     logic MemWrite;
+    logic [31:0] ImmExt;
+    logic [1:0] ImmSrc;
 
     // === PC Module ===
     PC pc_inst (
@@ -63,6 +65,14 @@ module Top (
         .WE(MemWrite),
         .RD(ReadData)
     );
+
+    // === Sign Extender ===
+    SignExtender extender(
+        .Instr(Instr),
+        .ImmSrc(ImmSrc),
+        .Out(ImmExt)
+    );
+
 
 
 endmodule

@@ -15,6 +15,7 @@ module Top (
     logic [31:0] ReadData;
     logic [2:0] ALUControl;
     logic Zero;
+    logic MemWrite;
 
     // === PC Module ===
     PC pc_inst (
@@ -51,5 +52,17 @@ module Top (
         .Zero(Zero),
         .Result(ALUResult)
     ); 
+
+    // === Data Memory ===
+     DataMemory #(
+    .MEM_DEPTH(256)
+     ) dmem(
+        .clk(CLK),
+        .A(ALUResult),
+        .WD(WriteData),
+        .WE(MemWrite),
+        .RD(ReadData)
+    );
+
 
 endmodule

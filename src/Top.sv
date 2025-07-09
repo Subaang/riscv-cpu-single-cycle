@@ -1,31 +1,26 @@
 module Top (
-    input logic clk,
-    input logic reset
+    input logic CLK,
+    input logic RST
 );
 
-    // === Program Counter wires ===
-    logic [31:0] pc;
-    logic [31:0] pc_next;
-
-    // === Instruction fetched from memory ===
-    logic [31:0] instruction;
-
-    // === RegFile ===
-    logic [31:0] srcA;
-    logic [31:0] srcB;
-    logic [31:0] write_data;
-    logic reg_write_enable;
-    logic [31:0] result;
-
-    
-    
+    logic [31:0] PC;
+    logic [31:0] PCNext;
+    logic [31:0] Instr;
+    logic [31:0] SrcA ;
+    logic [31:0] SrcB;
+    logic [31:0] WriteData;
+    logic RegWrite;
+    logic [31:0] Result;
+    logic [31:0] ALUResult;
+    logic [31:0] ReadData;
+    logic [2:0] ALUControl;
+    logic Zero;
 
     // === PC Module ===
     PC pc_inst (
-        .clk    (clk),
-        .rst    (reset),
-        .PCNext (pc_next),
-        .PC     (pc)
+        .clk    (CLK),
+        .PCNext (PCNext),
+        .PC     (PC)
     );
 
     // === Instruction Memory ===
@@ -33,19 +28,28 @@ module Top (
         .MEM_DEPTH(256),
         .INIT_FILE("inst_mem.hex")
     ) imem (
-        .addr (pc),
-        .inst (instruction)
+        .addr (PC),
+        .inst (Instr)
     );
 
     // === Register File ===
     RegisterFile reg_file(
-        .clk(clk),
-        .A1(instruction[19:15]),
-        .A2(instruction[24:20]),
-        .A3(instruction[11:7]),
-        .RD1(srcA),
-        .RD2(write_data),
-        .WD3(result)
+        .clk(CLK),
+        .A1(Instr[19:15]),
+        .A2(Instr[24:20]),
+        .A3(Instr[11:7]),
+        .RD1(SrcA),
+        .RD2(WriteData),
+        .WD3(RegWrite)
     );
+
+    // === ALU ===
+    ALU alu(
+        .ALUControl(ALUControl),
+        .A(SrcA),
+        .B(SrcB),
+        .Zero(Zero),
+        .Result(ALUResult)
+    ); 
 
 endmodule

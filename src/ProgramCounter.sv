@@ -1,4 +1,4 @@
-module PC(
+module ProgramCounter(
     input logic clk
     input  logic [31:0] PCNext,                 
     output logic [31:0] PC   

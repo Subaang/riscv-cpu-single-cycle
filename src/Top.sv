@@ -4,6 +4,8 @@ module Top (
 );
 
     logic [31:0] PC;
+    logic [31:0] PCPlus4;
+    logic [31:0] PCTarget;
     logic [31:0] PCNext;
     logic [31:0] Instr;
     logic [31:0] SrcA ;
@@ -18,9 +20,12 @@ module Top (
     logic MemWrite;
     logic [31:0] ImmExt;
     logic [1:0] ImmSrc;
+    logic PCSrc;
+    logic ResultSrc;
+    logic ALUSrc;
 
-    // === PC Module ===
-    PC pc_inst (
+    // === Program Counter ===
+    ProgramCounter pc_inst (
         .clk    (CLK),
         .PCNext (PCNext),
         .PC     (PC)
@@ -72,6 +77,12 @@ module Top (
         .ImmSrc(ImmSrc),
         .Out(ImmExt)
     );
+
+    assign PCPlus4 = PC + 4;
+    assign PCNext = PCSrc ? PCPlus4 : PCTarget;
+    assign Result = ResultSrc ? ReadData : ALUResult;
+    assign PCTarget = ImmExt + PC;
+    assign SrcB = ALUSrc ? ImmExt : RD2;
 
 
 
